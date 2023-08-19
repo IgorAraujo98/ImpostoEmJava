@@ -1,0 +1,79 @@
+import java.util.Scanner;
+
+public class CalculoImpostoDeRenda {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Leitura dos dados
+        System.out.print("Renda anual com salário: ");
+        double rendaSalarioAnual = scanner.nextDouble();
+        double rendaSalarioMensal = rendaSalarioAnual / 12;
+
+        System.out.print("Renda anual com prestação de serviço: ");
+        double rendaServicoAnual = scanner.nextDouble();
+
+        System.out.print("Renda anual com ganho de capital: ");
+        double rendaCapitalAnual = scanner.nextDouble();
+
+        System.out.print("Gastos médicos: ");
+        double gastosMedicos = scanner.nextDouble();
+
+        System.out.print("Gastos educacionais: ");
+        double gastosEducacionais = scanner.nextDouble();
+
+        // Cálculo dos impostos
+        double impostoSalario = calcularImpostoSalario(rendaSalarioMensal);
+        double impostoServico = calcularImpostoServico(rendaServicoAnual);
+        double impostoCapital = calcularImpostoCapital(rendaCapitalAnual);
+
+        // Cálculo das deduções
+        double maxDedutivel = calcularMaxDedutivel(impostoSalario);
+        double gastosDedutiveis = gastosMedicos + gastosEducacionais;
+        double deducoes = Math.min(maxDedutivel, gastosDedutiveis);
+
+        // Cálculo do imposto devido
+        double impostoBrutoTotal = impostoSalario + impostoServico + impostoCapital;
+        double impostoDevido = impostoBrutoTotal - deducoes;
+
+        // Impressão do relatório
+        System.out.println("\nRELATÓRIO DE IMPOSTO DE RENDA");
+        System.out.println("CONSOLIDADO DE RENDA:");
+        System.out.println("Imposto sobre salário: " + impostoSalario);
+        System.out.println("Imposto sobre serviços: " + impostoServico);
+        System.out.println("Imposto sobre ganho de capital: " + impostoCapital);
+        System.out.println("\nDEDUÇÕES:");
+        System.out.println("Máximo dedutível: " + maxDedutivel);
+        System.out.println("Gastos dedutíveis: " + gastosDedutiveis);
+        System.out.println("\nRESUMO:");
+        System.out.println("Imposto bruto total: " + impostoBrutoTotal);
+        System.out.println("Abatimento: " + deducoes);
+        System.out.println("Imposto devido: " + impostoDevido);
+
+        scanner.close();
+    }
+
+    // Função para calcular o imposto sobre salário
+    public static double calcularImpostoSalario(double rendaMensal) {
+        if (rendaMensal < 3000) {
+            return 0;
+        } else if (rendaMensal < 5000) {
+            return rendaMensal * 0.10;
+        } else {
+            return rendaMensal * 0.20;
+        }
+    }
+
+    // Função para calcular o imposto sobre prestação de serviço
+    public static double calcularImpostoServico(double rendaAnual) {
+        return rendaAnual * 0.15;
+    }
+
+    // Função para calcular o imposto sobre ganho de capital
+    public static double calcularImpostoCapital(double rendaAnual) {
+        return rendaAnual * 0.20;
+    }
+
+    // Função para calcular o máximo dedutível com base no imposto sobre salário
+    public static double calcularMaxDedutivel(double impostoSalario) {
+        return impostoSalario * 0.30;
+    }
